@@ -1,5 +1,7 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+
 public class Timer : MonoBehaviour
 {
     [Header("Component")] 
@@ -11,7 +13,8 @@ public class Timer : MonoBehaviour
     public bool countDown;
 
     [Header("highScore settings")]
-    public float fastestTime; 
+    public float fastestTime;
+    
 
 
     [Header("Timer Limit")]
@@ -23,12 +26,16 @@ public class Timer : MonoBehaviour
     
     void Start()
     {
-        
+        fastestTime = PlayerPrefs.GetFloat("fastestTime", Mathf.Infinity);
+        highScoreText.text = fastestTime == Mathf.Infinity
+            ? "Fastest: 0.0"
+            : "Fastest: " + fastestTime.ToString("0.0");
     }
 
  
     void Update()
     {
+        
         currentTime = countDown ? currentTime -= Time.deltaTime : currentTime += Time.deltaTime;
         
         if(hasLimit && ((countDown && currentTime<=timerLimit) || (!countDown && currentTime >= timerLimit)))
@@ -36,20 +43,15 @@ public class Timer : MonoBehaviour
             currentTime = timerLimit;
             SetTimerText();
             timerText.color = Color.red;
-            enabled = false;
-            
-            
+           
         }
         SetTimerText();
 
-        if (currentTime <= fastestTime) 
+        if (currentTime < fastestTime)
         {
-
-            PlayerPrefs.SetFloat("fastestTime", currentTime);
-            PlayerPrefs.GetFloat("fastestTime");
-           
-            
-
+            fastestTime = currentTime;
+            PlayerPrefs.SetFloat("fastestTime", fastestTime);
+            highScoreText.text = "Fastest: " + fastestTime.ToString("0.0");
         }
     }
 
