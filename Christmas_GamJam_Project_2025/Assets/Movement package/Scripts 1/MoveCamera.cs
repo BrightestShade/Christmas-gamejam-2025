@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveCamera : MonoBehaviour
@@ -8,6 +8,6 @@ public class MoveCamera : MonoBehaviour
 
     private void Update()
     {
-        transform.position = cameraPosition.position; 
+        transform.position = cameraPosition.position;
     }
 }
